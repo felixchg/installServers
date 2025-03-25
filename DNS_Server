@@ -1,0 +1,74 @@
+#!/bin/bash
+
+apt update
+apt install -y bind9
+mkdir /var/log/named
+chown bind:bind /var/log/named
+mkdir /etc/bind/zones
+
+cat << END >> /etc/bind/named.conf.local
+zone "abc.com" {
+        type master;
+        file "/etc/bind/zones/abc.com";
+};
+END
+
+cat << END > /etc/bind/zones/abc.com
+$ttl 38400
+abc.com.     IN      SOA     abc.com.     admin.abc.com. (
+                2025032101      ;; Serial  -- if modify this file must change this
+                3H              ;; Reflash -- Slave update Master time
+                1H              ;; Retry   -- Slave fail update retry
+                1W              ;; Expire  -- Slave fail Expire
+                1H )            ;; Cache TTL
+
+@        IN NS   dns.abc.com.
+@        IN MX 10 mail.abc.com
+dns.abc.com.    IN A    192.168.1.1
+mail.abc.com.   IN A    192.168.1.2
+END
+
+cat << END >> /etc/bind/named.conf.options
+        forwarders {
+                8.8.8.8;
+                168.95.192.1;
+        };
+
+        listen-on-v6 { any; };
+        listen-on port 53 { any; };
+        allow-query { any; };
+        recursion yes;
+logging {
+     channel default-log {
+         file "/var/log/named/named_default.log" versions 7 size 200m;
+         severity info;
+         print-time yes;
+     };
+     channel lamer-log {
+         file"/var/log/named/named_lamer.log" versions 3 size 100m;
+         severity info;
+         print-severity yes;
+         print-time yes;
+         print-category yes;
+     };
+    channel query-log {
+         file "/var/log/named/named_query.log" versions 7 size 1000m;
+         severity info;
+         print-time yes;
+     };
+    channel security-log {
+         file"/var/log/named/named_security.log" versions 3 size 100m;
+         severity info;
+         print-severity yes;
+         print-time yes;
+         print-category yes;
+    };
+     category lame-servers { lamer-log; };
+     category security{ security-log;};
+     category queries { query-log;};
+     category default { default-log;};
+};
+END
+
+systemctl reload bind9
+systemctl status bind9
