@@ -1,0 +1,23 @@
+# USE PVE Turnkey Linux Nextcloud install script
+# https://www.turnkeylinux.org
+# https://github.com/community-scripts/ProxmoxVE
+# https://github.com/community-scripts/ProxmoxVE/blob/main/turnkey/turnkey.sh
+
+
+# Tune Config:
+
+cd /var/www/nextcloud/config
+vi config.php
+  'maintenance_window_start' => 1,
+  'default_phone_region' => 'TW',
+
+
+apt install sudo
+cd /var/www/nextcloud
+sudo -u www-data php occ db:add-missing-indices
+sudo -u www-data php occ maintenance:repair --include-expensive
+
+
+
+
+
