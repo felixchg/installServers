@@ -1,6 +1,18 @@
 #!/bin/bash
 
-apt install vim parted xfsprogs
+# 1.安裝OS
+
+# 2.設定密碼及網路
+# vi /etc/netplan/00-installer-config.yaml
+# vi /etc/hostname
+# vi /etc/hosts
+# rm -f /etc/nginx/sites-enabled/*
+# rm -f /etc/nginx/sites-available/*
+
+apt update
+apt install vim parted xfsprogs git gpg curl
+
+# 3.DISK 調整
 # parted -s /dev/sdb -- mklabel gpt mkpart primary 2048s -0
 # vgcreate sev /dev/sdb1
 # lvcreate -l 100%FREE -n data srv
@@ -19,8 +31,9 @@ END
 
 chmod 600 /home/adm/.ssh/authorized_keys
 chown -R adm:wheel /home/adm
+# echo 'password' | mkpasswd -m sha-512 -s
 sed -i 's|^adm:!:|adm:$6$DnigYKrUEYFXf$LHQbtdIZw/hFRLTVRJpFsqI/M1GF8NioQqzEGAhpKX1g9w7SIAsdQJ6LUAC1Ab4MtwKKTZWL3w9Azl37KVDmd1:|' /etc/shadow
-
+sed -i 's|^root:|root:$6$ey9kYZTxtH42EZuc$R7ePwW6CCuaG13Uub9mU84VK8kgY/TaiFZEPIsx3SGwoza4dmhf35Sp9IkUQ3huY6p.uePjbafjfyZNoPIQ9S/|' /etc/shadow
 
 
 cat << END >> /root/.profile
