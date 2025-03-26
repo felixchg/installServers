@@ -49,6 +49,7 @@ END
 cat << END >> /etc/profile
 PS1='\h [\w] -\u- '
 export TMOUT=1800
+export TERM=xterm-256color
 
 alias SYNC='sync;sync;sync;sync;sync'
 alias cpnull='cp /dev/null'
