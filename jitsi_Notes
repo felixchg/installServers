@@ -51,6 +51,21 @@ vi /etc/jitsi/jicofo/jicofo.conf
 
 systemctl restart prosody jicofo jitsi-videobridge2
 
+
+# Enable another grafana
+## create database
+influx
+create database telegraf_metrics
+show database
+
+# Config telegraf collector
+cd /etc/telegraf/telegraf.d
+cat << END > telegraf_metrics.conf
+END
+
+# Import dashboard
+
+
 # Some useful command
 # To add new user,
 prosodyctl adduser user@Ymeet.mysite.com
