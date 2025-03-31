@@ -63,8 +63,10 @@ cd /etc/telegraf/telegraf.d
 cat << END > telegraf_metrics.conf
 END
 
-# Import dashboard
+systemctl reload telegraf
 
+# Import dashboard
+# Use Import function, import ID '928', and select datasource 'InfluxDB'
 
 # Some useful command
 # To add new user,
