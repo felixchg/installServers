@@ -10,6 +10,9 @@ bash nextcloud-vm.sh
 
 # Tune Config:
 
+SSL Certificate:
+/etc/ssl/private/
+
 cd /var/www/nextcloud/config
 vi config.php
   'maintenance_window_start' => 1,
