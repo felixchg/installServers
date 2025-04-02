@@ -3,6 +3,9 @@
 # https://github.com/community-scripts/ProxmoxVE
 # https://github.com/community-scripts/ProxmoxVE/blob/main/turnkey/turnkey.sh
 
+In PVE Console:
+curl https://github.com/community-scripts/ProxmoxVE/blob/main/vm/nextc
+loud-vm.sh -o nextcloud-vm.sh
 
 # Tune Config:
 
